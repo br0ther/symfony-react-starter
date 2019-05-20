@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+ <html>
+     <head>
+         <meta charset="UTF-8">
+         <title>{% block title %}Welcome!{% endblock %}</title>
+         {% block stylesheets %}{% endblock %}
+         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+     </head>
+     <body>
+         {% block body %}{% endblock %}
+         {% block javascripts %}
+
+         <!-- Include the compiled script-->
+             <script type="text/javascript" src="{{ asset('build/js/app.js') }}"></script>
+{#             <script type="text/javascript" src="{{ asset('build/vendors~js/app.js') }}"></script>#}
+             <script type="text/javascript" src="{{ asset('build/runtime.js') }}"></script>
+         {% endblock %}
+     </body>
+ </html>

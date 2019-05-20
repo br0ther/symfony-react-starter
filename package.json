@@ -1,5 +1,6 @@
 {
     "devDependencies": {
+        "@babel/preset-react": "^7.0.0",
         "@symfony/webpack-encore": "^0.27.0",
         "core-js": "^3.0.0",
         "webpack-notifier": "^1.6.0"
@@ -11,5 +12,10 @@
         "dev": "encore dev",
         "watch": "encore dev --watch",
         "build": "encore production --progress"
+    },
+    "dependencies": {
+        "latest-version": "^5.1.0",
+        "react": "^16.8.6",
+        "react-dom": "^16.8.6"
     }
 }
