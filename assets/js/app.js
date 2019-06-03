@@ -4,8 +4,8 @@ import ReactDOM from 'react-dom';
 import Items from './Components/Items';
 
 class App extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.state = {
             entries: []
@@ -41,7 +41,3 @@ class App extends React.Component {
 }
 
 ReactDOM.render(<App />, document.getElementById('root'));
-// ReactDOM.render(
-//     <h1>Hello, world!</h1>,
-//     document.getElementById('root')
-// );
