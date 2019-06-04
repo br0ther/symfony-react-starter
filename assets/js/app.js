@@ -8,35 +8,13 @@ const DEFAULT_QUERY = 'redux';
 const PATH_BASE = 'https://hn.algolia.com/api/v1';
 const PATH_SEARCH = '/search';
 const PARAM_SEARCH = 'query=';
-const url = `${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${DEFAULT_QUERY}`;
-
-function isSearched(searchTerm) {
-    return function (item) {
-        return item.title.toLowerCase().includes(searchTerm.toLowerCase());
-    }
-}
-
-class Search extends Component {
-    render() {
-        const {value, onChange} = this.props;
-        return (
-            <form>
-                <input
-                    type="text"
-                    value={value}
-                    onChange={onChange}
-                />
-            </form>
-         );
-    }
-}
 
 class Table extends Component {
     render() {
-        const { list, pattern, onDismiss } = this.props;
+        const { list, onDismiss } = this.props;
         return (
             <div>
-            {list.filter(isSearched(pattern)).map(item =>
+            {list.map(item =>
                     <div key={item.objectID}>
                         <span>
                             <a href={item.url}>{item.title}</a>
@@ -57,25 +35,6 @@ class Table extends Component {
 
 }
 
-class Button extends Component {
-    render() {
-        const {
-            onClick,
-            className = '',
-            children
-        } = this.props;
-        return (
-            <button
-                onClick={onClick}
-                className={className}
-                type="button"
-            >
-                {children}
-            </button>
-        );
-    }
-}
-
 class List extends Component {
 
     constructor(props) {
@@ -87,12 +46,21 @@ class List extends Component {
         };
 
         this.setSearchTopStories = this.setSearchTopStories.bind(this);
+        this.fetchSearchTopStories = this.fetchSearchTopStories.bind(this);
         this.onDismiss = this.onDismiss.bind(this);
         this.onSearchChange = this.onSearchChange.bind(this);
+        this.onSearchSubmit = this.onSearchSubmit.bind(this);
     }
 
     setSearchTopStories(result) {
         this.setState({ result });
+    }
+
+    fetchSearchTopStories(searchTerm) {
+        fetch(`${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}`)
+            .then(response => response.json())
+            .then(result => this.setSearchTopStories(result))
+            .catch(error => error);
     }
 
     onSearchChange(event) {
@@ -110,17 +78,22 @@ class List extends Component {
         });
     }
 
+    onSearchSubmit(event) {
+        const { searchTerm } = this.state;
+
+        this.fetchSearchTopStories(searchTerm);
+        //No effect, so i'm commented this
+        // event.preventDefault();
+    }
+
     componentDidMount() {
-        fetch(url)
-            .then(response => response.json())
-            .then(result => this.setSearchTopStories(result))
-            .catch(error => error);
+        const { searchTerm } = this.state;
+
+        this.fetchSearchTopStories(searchTerm);
     }
 
     render() {
         const {searchTerm, result} = this.state;
-
-        console.log(this.state);
 
         return (
             <div className="page">
@@ -128,12 +101,15 @@ class List extends Component {
                     <Search
                         value={searchTerm}
                         onChange={this.onSearchChange}
-                    />
+                        onSubmit={this.onSearchSubmit}
+
+                    >
+                        Search
+                    </Search>
                     {
                         result ?
                         <Table
                             list={result.hits}
-                            pattern={searchTerm}
                             onDismiss={this.onDismiss}
                         /> : null
                     }
@@ -151,6 +127,41 @@ function App() {
         </div>
     )
 }
+
+// "block body" syntax
+const Search = ({
+        value,
+        onChange,
+        onSubmit,
+        children
+    }) => {
+    return (
+        <form onSubmit={onSubmit}>
+            <input
+                type="text"
+                value={value}
+                onChange={onChange}
+            />
+            <button type="submit">
+                {children}
+            </button>
+        </form>
+    );
+};
+
+// "concise body" syntax
+const Button = ({
+    onClick,
+    className = '',
+    children,
+    }) =>
+    <button
+        onClick={onClick}
+        className={className}
+        type="button"
+    >
+        {children}
+    </button>;
 
 ReactDOM.render(
     <App />,
