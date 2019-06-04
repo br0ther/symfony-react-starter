@@ -122,10 +122,6 @@ class List extends Component {
 
         console.log(this.state);
 
-        if (!result) {
-            return null;
-        }
-
         return (
             <div className="page">
                 <div className="interactions">
@@ -133,11 +129,14 @@ class List extends Component {
                         value={searchTerm}
                         onChange={this.onSearchChange}
                     />
-                    <Table
-                        list={result.hits}
-                        pattern={searchTerm}
-                        onDismiss={this.onDismiss}
-                    />
+                    {
+                        result ?
+                        <Table
+                            list={result.hits}
+                            pattern={searchTerm}
+                            onDismiss={this.onDismiss}
+                        /> : null
+                    }
                 </div>
             </div>
         );
