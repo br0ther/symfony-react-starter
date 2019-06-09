@@ -27,7 +27,7 @@ class Clock extends Component {
     }
 
     render() {
-        let helloWorld = 'Hello Ukraine';
+        let helloWorld = 'Hello, Ukraine!';
         return (
             <div>
                 <h1>{helloWorld}</h1>
