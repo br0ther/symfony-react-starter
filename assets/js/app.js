@@ -5,7 +5,7 @@ import '../css/app.css';
 import Clock from './Components/Clock';
 
 const DEFAULT_QUERY = 'redux';
-const DEFAULT_HPP = '100';
+const DEFAULT_HPP = '20';
 
 const PATH_BASE = 'https://hn.algolia.com/api/v1';
 const PATH_SEARCH = '/search';
@@ -49,6 +49,7 @@ class List extends Component {
             searchKey: '',
             searchTerm: DEFAULT_QUERY,
             error: null,
+            isLoading: false,
         };
 
         this.needsToSearchTopStories = this.needsToSearchTopStories.bind(this);
@@ -86,11 +87,14 @@ class List extends Component {
             results: {
                 ...results,
                 [searchKey]: { hits: updatedHits, page }
-            }
+            },
+            isLoading: false
         });
     }
 
     fetchSearchTopStories(searchTerm, page = 0) {
+        this.setState({ isLoading: true });
+
         fetch(`${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}&${PARAM_PAGE}${page}&${PARAM_HPP}${DEFAULT_HPP}`)
             .then(response => response.json())
             .then(result => this.setSearchTopStories(result))
@@ -134,7 +138,7 @@ class List extends Component {
     }
 
     render() {
-        const {searchTerm, results, searchKey, error} = this.state;
+        const {searchTerm, results, searchKey, error, isLoading} = this.state;
 
         const page = (
             results &&
@@ -170,9 +174,14 @@ class List extends Component {
                         onDismiss={this.onDismiss}
                     />
                     <div className="interactions">
-                        <Button onClick={() => this.fetchSearchTopStories(searchKey, page + 1)}>
-                            More
-                        </Button>
+                        { isLoading
+                            ? <Loading />
+                            : <Button
+                                onClick={() => this.fetchSearchTopStories(searchKey, page + 1)}
+                            >
+                                More
+                            </Button>
+                        }
                     </div>
                 </div>
             </div>
@@ -230,6 +239,18 @@ function App() {
         </div>
     )
 }
+
+const Loading = () =>
+    <div>Loading ...</div>;
+
+export default App;
+
+
+export {
+    Button,
+        Search,
+        Table,
+};
 
 ReactDOM.render(
     <App />,
