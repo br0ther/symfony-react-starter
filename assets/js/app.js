@@ -67,13 +67,19 @@ class List extends Component {
         const { hits, page } = result;
         const { searchKey, results } = this.state;
 
+        function isNotEmpty(hit) {
+            return hit.title !== "" && hit.title !== null;
+        }
+
+        const notEmptyHits = hits.filter(isNotEmpty);
+
         const oldHits = results && results[searchKey]
             ? results[searchKey].hits
             : [];
 
         const updatedHits = [
             ...oldHits,
-            ...hits
+            ...notEmptyHits
         ];
 
         this.setState({
@@ -174,35 +180,33 @@ class List extends Component {
     }
 }
 
-function App() {
-    return (
-        <div>
-            <Clock/>
-            <List/>
-        </div>
-    )
+class Search extends Component {
+    componentDidMount() {
+        if (this.input) {
+            this.input.focus();
+        }
+    }
+    render() {
+        const {
+            value,
+            onChange,
+            onSubmit,
+            children
+        } = this.props;
+        return (
+            <form onSubmit={onSubmit}>
+                <input
+                    type="text"
+                    value={value}
+                    onChange={onChange}
+                    ref={el => this.input = el}
+                />
+                <button type="submit">
+                    {children}
+                </button>
+            </form> );
+    }
 }
-
-// "block body" syntax
-const Search = ({
-        value,
-        onChange,
-        onSubmit,
-        children
-    }) => {
-    return (
-        <form onSubmit={onSubmit}>
-            <input
-                type="text"
-                value={value}
-                onChange={onChange}
-            />
-            <button type="submit">
-                {children}
-            </button>
-        </form>
-    );
-};
 
 // "concise body" syntax
 const Button = ({
@@ -217,6 +221,15 @@ const Button = ({
     >
         {children}
     </button>;
+
+function App() {
+    return (
+        <div>
+            <Clock/>
+            <List/>
+        </div>
+    )
+}
 
 ReactDOM.render(
     <App />,
