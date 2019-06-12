@@ -14,14 +14,32 @@ const smallColumn = {
 };
 
 class Table extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            sortKey: 'NONE',
+            isSortReverse: false,
+        };
+
+        this.onSort = this.onSort.bind(this);
+    }
+
+    onSort(sortKey) {
+        const isSortReverse = this.state.sortKey === sortKey &&
+            !this.state.isSortReverse;
+        this.setState({ sortKey, isSortReverse });
+    }
+
     render() {
         const {
             list,
             onDismiss,
-            sortKey,
-            onSort,
-            isSortReverse,
         } = this.props;
+
+        const {
+            sortKey,
+            isSortReverse,
+        } = this.state;
 
         const sortedList = SORTS[sortKey](list);
         const reverseSortedList = isSortReverse
@@ -34,7 +52,7 @@ class Table extends Component {
                     <span style={{ width: '40%' }}>
                         <Sort
                             sortKey={'TITLE'}
-                            onSort={onSort}
+                            onSort={this.onSort}
                             activeSortKey={sortKey}
                         > Title
                         </Sort>
@@ -42,7 +60,7 @@ class Table extends Component {
                     <span style={{ width: '30%' }}>
                         <Sort
                             sortKey={'AUTHOR'}
-                            onSort={onSort}
+                            onSort={this.onSort}
                             activeSortKey={sortKey}
                         >
                             Author
@@ -51,7 +69,7 @@ class Table extends Component {
                     <span style={{ width: '10%' }}>
                         <Sort
                             sortKey={'COMMENTS'}
-                            onSort={onSort}
+                            onSort={this.onSort}
                             activeSortKey={sortKey}
                         >
                           Comments
@@ -60,7 +78,7 @@ class Table extends Component {
                     <span style={{ width: '10%' }}>
                         <Sort
                             sortKey={'POINTS'}
-                            onSort={onSort}
+                            onSort={this.onSort}
                             activeSortKey={sortKey}
                         > Points
                         </Sort>
