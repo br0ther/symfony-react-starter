@@ -44,10 +44,6 @@ span {
     border-bottom: 1px solid #38BB6C;
 }
 
-.table {
-    margin: 20px 0;
-}
-
 .table-header {
     display: flex;
     line-height: 24px;
