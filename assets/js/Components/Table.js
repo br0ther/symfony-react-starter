@@ -20,7 +20,14 @@ class Table extends Component {
             onDismiss,
             sortKey,
             onSort,
+            isSortReverse,
         } = this.props;
+
+        const sortedList = SORTS[sortKey](list);
+        const reverseSortedList = isSortReverse
+            ? sortedList.reverse()
+            : sortedList;
+
         return (
             <div className="table">
                 <div className="table-header">
@@ -28,6 +35,7 @@ class Table extends Component {
                         <Sort
                             sortKey={'TITLE'}
                             onSort={onSort}
+                            activeSortKey={sortKey}
                         > Title
                         </Sort>
                     </span>
@@ -35,6 +43,7 @@ class Table extends Component {
                         <Sort
                             sortKey={'AUTHOR'}
                             onSort={onSort}
+                            activeSortKey={sortKey}
                         >
                             Author
                         </Sort>
@@ -43,6 +52,7 @@ class Table extends Component {
                         <Sort
                             sortKey={'COMMENTS'}
                             onSort={onSort}
+                            activeSortKey={sortKey}
                         >
                           Comments
                         </Sort>
@@ -51,6 +61,7 @@ class Table extends Component {
                         <Sort
                             sortKey={'POINTS'}
                             onSort={onSort}
+                            activeSortKey={sortKey}
                         > Points
                         </Sort>
                     </span>
@@ -58,7 +69,7 @@ class Table extends Component {
                         Archive
                     </span>
                     </div>
-                {SORTS[sortKey](list).map(item =>
+                {reverseSortedList.map(item =>
                     <div key={item.objectID} className="table-row">
                         <span style={largeColumn}>
                             <a href={item.url}>{item.title}</a>
@@ -78,12 +89,25 @@ class Table extends Component {
     }
 }
 
-const Sort = ({ sortKey, onSort, children }) =>
-    <Button
-        onClick={() => onSort(sortKey)}
-        className="button-inline"
-    >
-        {children}
-    </Button>;
+const Sort = ({
+    sortKey,
+    onSort,
+    children,
+    activeSortKey
+    }) => {
+    const sortClass = ['button-inline'];
+    if (sortKey === activeSortKey) {
+        sortClass.push('button-active');
+    }
+
+    return(
+        <Button
+            onClick={() => onSort(sortKey)}
+            className={sortClass.join(' ')}
+        >
+            {children}
+        </Button>
+    );
+};
 
 export default Table;

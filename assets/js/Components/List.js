@@ -32,6 +32,7 @@ class List extends Component {
             error: null,
             isLoading: false,
             sortKey: 'NONE',
+            isSortReverse: false,
         };
 
         this.needsToSearchTopStories = this.needsToSearchTopStories.bind(this);
@@ -121,7 +122,8 @@ class List extends Component {
     }
 
     onSort(sortKey) {
-        this.setState({ sortKey });
+        const isSortReverse = this.state.sortKey === sortKey && !this.state.isSortReverse;
+        this.setState({ sortKey, isSortReverse });
     }
 
     render() {
@@ -132,6 +134,7 @@ class List extends Component {
             error,
             isLoading,
             sortKey,
+            isSortReverse
         } = this.state;
 
         const page = (
@@ -166,6 +169,7 @@ class List extends Component {
                         onDismiss={this.onDismiss}
                         sortKey={sortKey}
                         onSort={this.onSort}
+                        isSortReverse={isSortReverse}
                     />
                     <div className="interactions">
                         <ButtonWithLoading
