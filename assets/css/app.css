@@ -1,68 +1,36 @@
-body {
-    color: #222;
-    background: #f4f4f4;
-    font: 400 14px CoreSans, Arial, sans-serif;
+.todo-app {
+    font-family: sans-serif;
 }
 
-a {
-    color: #222;
+/** add todo **/
+.add-todo {
+    margin-left: 0.5rem;
 }
 
-a:hover {
-    text-decoration: underline;
+/** todo list **/
+.todo-list {
+    margin-top: 1rem;
+    text-align: left;
+    list-style: none;
 }
 
-ul, li { list-style: none; padding: 0; margin: 0;
+/** todo item **/
+.todo-item {
+    font-family: monospace;
+    cursor: pointer;
+    line-height: 1.5;
+}
+.todo-item__text--completed {
+    text-decoration: line-through;
+    color: lightgray;
 }
 
-input {
-    padding: 10px; border-radius: 5px; margin-right: 10px; border: 1px solid #dddddd;
+/** visibility filters **/
+.filter {
+    padding: 0.3rem 0;
+    margin: 0 0.3rem;
+    cursor: pointer;
 }
-
-span {
-    padding: 0 5px;
-}
-
-.page {
-    margin: 20px;
-}
-
-.interactions {
-    text-align: center;
-}
-
-.button-inline {
-    border-width: 0;
-    background: transparent;
-    color: inherit;
-    text-align: inherit; -webkit-font-smoothing: inherit; padding: 0;
-    font-size: inherit;
-    cursor: pointer; }
-
-.button-active {
-    border-radius: 0;
-    border-bottom: 1px solid #38BB6C;
-}
-
-.table-header {
-    display: flex;
-    line-height: 24px;
-    font-size: 16px;
-    padding: 0 10px; justify-content: space-between;
-}
-.table-empty {
-    margin: 200px; text-align: center; font-size: 16px;
-}
-
-.table-row {
-    display: flex; line-height: 24px; white-space: nowrap; margin: 10px 0; padding: 10px;
-    background: #ffffff;
-    border: 1px solid #e3e3e3;
-}
-
-.table-header > span {
-    overflow: hidden; text-overflow: ellipsis; padding: 0 5px;
-}
-.table-row > span {
-    overflow: hidden; text-overflow: ellipsis; padding: 0 5px;
+.filter--active {
+    border-bottom: 1px solid black;
 }

@@ -1,22 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import '../css/app.css';
 
-import Clock from './Components/Clock';
-import List from './Components/List';
+import {Provider} from 'react-redux';
+import store from './redux/store';
 
-function App() {
-    return (
-        <div>
-            <Clock/>
-            <List/>
-        </div>
-    )
-}
-
-export default App;
+import TodoApp from "./TodoApp";
 
 ReactDOM.render(
-    <App />,
-    document.getElementById('root'))
-;
+    <Provider store={store}>
+        <TodoApp />
+    </Provider>,
+    document.getElementById('root')
+);

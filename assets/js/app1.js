@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import Items from './Components/Items';
+import Items from './Components2/Items';
 
 class App extends React.Component {
     constructor(props) {
